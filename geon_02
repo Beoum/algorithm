@@ -1,0 +1,44 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(String[] id_list, String[] report, int k) {
+        int[] answer = new int[id_list.length];
+
+        Map<String, List<String>> reportById = new HashMap<>();
+
+        Map<String, Integer> reportByCount = new HashMap<>();
+
+        for(String id : id_list ){
+            reportById.put(id, new ArrayList<>());
+        }
+
+        for(String re : report ){
+            String[] temp = re.split(" ");
+
+            List<String> tempList = reportById.get(temp[0]);
+
+            if(!tempList.contains(temp[1])){
+                tempList.add(temp[1]);
+                reportById.put(temp[0], tempList);
+
+                if(reportByCount.get(temp[1]) != null ){
+                    reportByCount.put(temp[1], reportByCount.get(temp[1]) + 1 );
+                }else {
+                    reportByCount.put(temp[1], 1 );
+                }
+            }
+        }
+
+        for(int i = 0; i< id_list.length; i++){
+            List<String> tList = reportById.get(id_list[i]);
+
+            for(String key : tList){
+                if(reportByCount.get(key) >= k ){
+                    answer[i] += 1;
+                }
+            }
+        }
+
+        return answer;
+    }
+}
